@@ -1,0 +1,81 @@
+
+/* Définition des variables de thème (pour shadcn/ui ou classes personnalisées) */
+@theme {
+  --color-primary-blue: #354878;
+  --color-secondary-blue: #6A9ECC;
+  --color-accent-pink: #B9177B;
+  --color-accent-beige: #AD947E;
+  --color-light-gray: #f5f5f5;
+  --color-border: #e5e7eb;      /* Bordure par défaut */
+  --color-background: #ffffff;  /* Fond par défaut */
+  --color-foreground: #000000;  /* Texte par défaut */
+}
+
+/* Définition des utilitaires personnalisés */
+@utility border-border {
+  border-color: var(--color-border);
+}
+
+@utility bg-background {
+  background-color: var(--color-background);
+}
+
+@utility text-foreground {
+  color: var(--color-foreground);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 2rem;
+    line-height: 1.2;
+  }
+
+  h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    line-height: 1.3;
+  }
+
+  h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 1.125rem;
+    line-height: 1.4;
+  }
+
+  p {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  a {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+  }
+
+  button {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}

@@ -1,0 +1,2 @@
+export const projectId = 'rynlamvmrxfboaxbxndu';
+export const publicAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ5bmxhbXZtcnhmYm9heGJ4bmR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxMzUwNjcsImV4cCI6MjA5MTcxMTA2N30.NeLaU_2Ebh5F3eN6K4TelXWFRNO6rUUKzoj8W7toTmU';
