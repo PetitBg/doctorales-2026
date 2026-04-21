@@ -250,7 +250,10 @@ export default function AdminPage() {
   // ── Login screen ─────────────────────────────────────────────────────────────
 
   if (!isAuthenticated) {
-    return <LoginScreen onLogin={() => setIsAuthenticated(true)} />;
+    return <LoginScreen onLogin={() => {
+      setIsAuthenticated(true);
+      window.location.hash = '#admin';
+    }} />;
   }
 
   // ── Dashboard ────────────────────────────────────────────────────────────────
@@ -479,7 +482,7 @@ export default function AdminPage() {
                         <span className="bg-[#354878] text-white px-2 py-1 rounded text-xs font-bold">
                           {inscription.atelier_id}
                         </span>
-                      </td>
+                       </td>
                       <td className="px-4 py-3 font-medium text-gray-800">{inscription.nom}</td>
                       <td className="px-4 py-3 text-gray-700">{inscription.prenom}</td>
                       <td className="px-4 py-3 text-gray-600">{inscription.email}</td>

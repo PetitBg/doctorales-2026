@@ -48,15 +48,17 @@ export default function App() {
       setCurrentPage('admin');
     }
   };
-  
-  // Vérifier au chargement
+
+  // Vérifier au chargement initial
   if (window.location.hash === '#admin') {
     setCurrentPage('admin');
   }
-  
+
   window.addEventListener('hashchange', handleHashChange);
   return () => window.removeEventListener('hashchange', handleHashChange);
 }, []);
+  
+  
 
   const handleNavigate = (page: string, params?: PageParams) => {
   if (page !== 'admin') {
