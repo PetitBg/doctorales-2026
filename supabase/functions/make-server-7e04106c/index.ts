@@ -45,8 +45,8 @@ Deno.serve(async (req) => {
     return Response.json({ inscriptions: data }, { headers: corsHeaders })
   }
 
-  // GET /user/:email
-  if (req.method === 'GET' && path.startsWith('/user/')) {
+  // GET /user/:email — ancienne route (compatibilité)
+  if (req.method === 'GET' && path.startsWith('/user/') && !path.startsWith('/user-all/')) {
     const email = decodeURIComponent(path.replace('/user/', ''))
     const { data } = await supabase
       .from('ateliers_inscriptions')
@@ -60,11 +60,36 @@ Deno.serve(async (req) => {
     }, { headers: corsHeaders })
   }
 
+  // GET /user-all/:email — inscriptions par jour
+  if (req.method === 'GET' && path.startsWith('/user-all/')) {
+    const email = decodeURIComponent(path.replace('/user-all/', ''))
+
+    const { data } = await supabase
+      .from('ateliers_inscriptions')
+      .select('atelier_id, jour')
+      .eq('email', email)
+
+    const registrations: Record<string, string | null> = {
+      lundi: null,
+      mardi: null,
+      mercredi: null,
+    }
+
+    for (const row of data ?? []) {
+      if (row.jour) {
+        registrations[row.jour] = row.atelier_id
+      }
+    }
+
+    return Response.json({ registrations }, { headers: corsHeaders })
+  }
+
   // POST /register
   if (req.method === 'POST' && path === '/register') {
     const body = await req.json()
-    const { atelierId, jauge, nom, prenom, email } = body
+    const { atelierId, jauge, jour, nom, prenom, email } = body
 
+    // Vérifier si atelier complet
     const { count } = await supabase
       .from('ateliers_inscriptions')
       .select('*', { count: 'exact', head: true })
@@ -77,27 +102,59 @@ Deno.serve(async (req) => {
       )
     }
 
+    // Vérifier si déjà inscrit ce jour
+    if (jour) {
+      const { data: existingJour } = await supabase
+        .from('ateliers_inscriptions')
+        .select('atelier_id')
+        .eq('email', email)
+        .eq('jour', jour)
+        .maybeSingle()
+
+      if (existingJour) {
+        return Response.json(
+          { error: `Vous êtes déjà inscrit·e à un atelier ce jour (${existingJour.atelier_id})` },
+          { status: 400, headers: corsHeaders }
+        )
+      }
+    }
+
     const { error } = await supabase
       .from('ateliers_inscriptions')
-      .insert({ atelier_id: atelierId, nom, prenom, email })
+      .insert({ atelier_id: atelierId, jour: jour ?? null, nom, prenom, email })
 
     if (error) {
-      const msg = error.code === '23505'
-        ? 'Vous êtes déjà inscrit·e à un atelier'
-        : error.message
-      return Response.json({ error: msg }, { status: 400, headers: corsHeaders })
+      return Response.json({ error: error.message }, { status: 400, headers: corsHeaders })
     }
 
     return Response.json({ message: 'Inscription confirmée !' }, { headers: corsHeaders })
   }
 
-  // DELETE /unregister/:email
-  if (req.method === 'DELETE' && path.startsWith('/unregister/')) {
+  // DELETE /unregister/:email — ancienne route (compatibilité)
+  if (req.method === 'DELETE' && path.startsWith('/unregister/') && !path.includes('/unregister-jour/')) {
     const email = decodeURIComponent(path.replace('/unregister/', ''))
     const { error } = await supabase
       .from('ateliers_inscriptions')
       .delete()
       .eq('email', email)
+
+    if (error) {
+      return Response.json({ error: error.message }, { status: 400, headers: corsHeaders })
+    }
+    return Response.json({ message: 'Désinscription effectuée' }, { headers: corsHeaders })
+  }
+
+  // DELETE /unregister-jour/:email/:jour — désinscription par jour
+  if (req.method === 'DELETE' && path.startsWith('/unregister-jour/')) {
+    const parts = path.replace('/unregister-jour/', '').split('/')
+    const email = decodeURIComponent(parts[0])
+    const jour = parts[1]
+
+    const { error } = await supabase
+      .from('ateliers_inscriptions')
+      .delete()
+      .eq('email', email)
+      .eq('jour', jour)
 
     if (error) {
       return Response.json({ error: error.message }, { status: 400, headers: corsHeaders })
