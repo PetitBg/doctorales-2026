@@ -10,7 +10,7 @@ import {
 interface Inscription {
   id: string;
   atelier_id: string;
-  jour: string | null;          // ✅ nouveau champ
+  jour: string | null;
   nom: string;
   prenom: string;
   email: string;
@@ -19,7 +19,7 @@ interface Inscription {
 
 interface FormData {
   atelier_id: string;
-  jour?: string;                // ✅ optionnel pour l’ajout
+  jour?: string;
   nom: string;
   prenom: string;
   email: string;
@@ -169,7 +169,11 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
 const INITIAL_FORM: FormData = { atelier_id: '', jour: '', nom: '', prenom: '', email: '' };
 
 export default function AdminPage() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // ✅ Initialisation avec sessionStorage
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return sessionStorage.getItem('admin_auth') === 'true';
+  });
+
   const [inscriptions, setInscriptions] = useState<Inscription[]>([]);
   const [stats, setStats] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(false);
@@ -216,7 +220,7 @@ export default function AdminPage() {
     }
   };
 
-  // ── Ajout manuel (avec champ jour) ──────────────────────────────────────────
+  // ── Ajout manuel ─────────────────────────────────────────────────────────────
 
   const handleAdd = async () => {
     if (!formData.atelier_id || !formData.nom || !formData.prenom || !formData.email) {
@@ -226,7 +230,6 @@ export default function AdminPage() {
 
     setFormLoading(true);
     try {
-      // Envoi du jour en plus des autres champs
       await apiPost('/register', { 
         ...formData, 
         jauge: 999,
@@ -255,10 +258,11 @@ export default function AdminPage() {
     return matchSearch && matchAtelier;
   });
 
-  // ── Login screen ─────────────────────────────────────────────────────────────
+  // ── Login screen avec sessionStorage ─────────────────────────────────────────
 
   if (!isAuthenticated) {
     return <LoginScreen onLogin={() => {
+      sessionStorage.setItem('admin_auth', 'true');
       setIsAuthenticated(true);
       window.location.hash = '#admin';
     }} />;
@@ -274,8 +278,13 @@ export default function AdminPage() {
           <h1 className="text-white text-2xl font-bold">Administration</h1>
           <p className="text-white/70 text-sm">Gestion des inscriptions aux ateliers</p>
         </div>
+        {/* ✅ Bouton Déconnexion avec suppression sessionStorage */}
         <button
-          onClick={() => setIsAuthenticated(false)}
+          onClick={() => {
+            sessionStorage.removeItem('admin_auth');
+            setIsAuthenticated(false);
+            window.location.hash = '';
+          }}
           className="flex items-center gap-2 text-white/80 hover:text-white transition-colors"
         >
           <LogOut size={20} />
@@ -384,7 +393,7 @@ export default function AdminPage() {
           </div>
         </div>
 
-        {/* Formulaire d'ajout (avec jour) */}
+        {/* Formulaire d'ajout avec jour */}
         {showAddForm && (
           <div className="bg-white rounded-xl p-6 shadow-sm border-2 border-[#B9177B]/20">
             <h3 className="text-[#354878] font-bold text-lg mb-4 flex items-center gap-2">
@@ -404,7 +413,6 @@ export default function AdminPage() {
                 ))}
               </select>
 
-              {/* ✅ Nouveau sélecteur Jour */}
               <select
                 value={formData.jour ?? ''}
                 onChange={(e) => setFormData({ ...formData, jour: e.target.value })}
@@ -464,7 +472,7 @@ export default function AdminPage() {
           </div>
         )}
 
-        {/* Tableau des inscriptions (avec colonne Jour) */}
+        {/* Tableau des inscriptions avec colonne Jour */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
             <h3 className="font-bold text-[#354878] flex items-center gap-2">
@@ -488,7 +496,7 @@ export default function AdminPage() {
                 <thead className="bg-gray-50 border-b border-gray-100">
                   <tr>
                     <th className="px-4 py-3 text-left text-gray-600 font-semibold">Atelier</th>
-                    <th className="px-4 py-3 text-left text-gray-600 font-semibold">Jour</th>  {/* ✅ Nouvelle colonne */}
+                    <th className="px-4 py-3 text-left text-gray-600 font-semibold">Jour</th>
                     <th className="px-4 py-3 text-left text-gray-600 font-semibold">Nom</th>
                     <th className="px-4 py-3 text-left text-gray-600 font-semibold">Prénom</th>
                     <th className="px-4 py-3 text-left text-gray-600 font-semibold">Email</th>
@@ -504,7 +512,6 @@ export default function AdminPage() {
                           {inscription.atelier_id}
                         </span>
                       </td>
-                      {/* ✅ Affichage du jour */}
                       <td className="px-4 py-3 text-gray-600 text-sm capitalize">
                         {inscription.jour ?? '—'}
                       </td>
