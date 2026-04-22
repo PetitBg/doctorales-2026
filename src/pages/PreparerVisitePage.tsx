@@ -1,4 +1,5 @@
 import { MapPin, Train, Bus, Car, Utensils, Hotel, Info, ExternalLink } from 'lucide-react';
+import campusImg from '../assets/026_DB11817.jpg';
 
 interface PreparerVisitePageProps {
   onNavigate: (page: string) => void;
@@ -11,7 +12,7 @@ export default function PreparerVisitePage({ onNavigate }: PreparerVisitePagePro
       {/* ── Hero avec photo campus ─────────────────────────────────────────── */}
       <section className="relative h-[60vh] min-h-[400px] overflow-hidden">
         <img
-          src="/src/assets/026_DB11817.jpg"
+          src={campusImg}
           alt="Vue du Campus Condorcet à Aubervilliers, espace piétonnier animé entouré de bâtiments modernes et d'arbres"
           className="w-full h-full object-cover"
         />
