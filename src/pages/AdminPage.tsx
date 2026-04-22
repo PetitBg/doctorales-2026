@@ -10,6 +10,7 @@ import {
 interface Inscription {
   id: string;
   atelier_id: string;
+  jour: string | null;          // ✅ nouveau champ
   nom: string;
   prenom: string;
   email: string;
@@ -18,6 +19,7 @@ interface Inscription {
 
 interface FormData {
   atelier_id: string;
+  jour?: string;                // ✅ optionnel pour l’ajout
   nom: string;
   prenom: string;
   email: string;
@@ -76,9 +78,10 @@ async function apiDelete<T>(path: string): Promise<T> {
 // ─── Export CSV ───────────────────────────────────────────────────────────────
 
 function exportCSV(inscriptions: Inscription[]) {
-  const headers = ['Atelier', 'Nom', 'Prénom', 'Email', 'Date inscription'];
+  const headers = ['Atelier', 'Jour', 'Nom', 'Prénom', 'Email', 'Date inscription'];
   const rows = inscriptions.map((i) => [
     i.atelier_id,
+    i.jour ?? '',
     i.nom,
     i.prenom,
     i.email,
@@ -163,7 +166,7 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
 
 // ─── Composant principal Admin ────────────────────────────────────────────────
 
-const INITIAL_FORM: FormData = { atelier_id: '', nom: '', prenom: '', email: '' };
+const INITIAL_FORM: FormData = { atelier_id: '', jour: '', nom: '', prenom: '', email: '' };
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -213,7 +216,7 @@ export default function AdminPage() {
     }
   };
 
-  // ── Ajout manuel ─────────────────────────────────────────────────────────────
+  // ── Ajout manuel (avec champ jour) ──────────────────────────────────────────
 
   const handleAdd = async () => {
     if (!formData.atelier_id || !formData.nom || !formData.prenom || !formData.email) {
@@ -223,7 +226,12 @@ export default function AdminPage() {
 
     setFormLoading(true);
     try {
-      await apiPost('/register', { ...formData, jauge: 999 });
+      // Envoi du jour en plus des autres champs
+      await apiPost('/register', { 
+        ...formData, 
+        jauge: 999,
+        jour: formData.jour || null 
+      });
       setAlert({ type: 'success', text: 'Inscription ajoutée avec succès' });
       setFormData(INITIAL_FORM);
       setShowAddForm(false);
@@ -376,7 +384,7 @@ export default function AdminPage() {
           </div>
         </div>
 
-        {/* Formulaire d'ajout */}
+        {/* Formulaire d'ajout (avec jour) */}
         {showAddForm && (
           <div className="bg-white rounded-xl p-6 shadow-sm border-2 border-[#B9177B]/20">
             <h3 className="text-[#354878] font-bold text-lg mb-4 flex items-center gap-2">
@@ -394,6 +402,18 @@ export default function AdminPage() {
                 {ATELIERS_IDS.map((id) => (
                   <option key={id} value={id}>{id}</option>
                 ))}
+              </select>
+
+              {/* ✅ Nouveau sélecteur Jour */}
+              <select
+                value={formData.jour ?? ''}
+                onChange={(e) => setFormData({ ...formData, jour: e.target.value })}
+                className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#6A9ECC] text-sm text-gray-700"
+              >
+                <option value="">Choisir un jour</option>
+                <option value="lundi">Lundi 9 juin</option>
+                <option value="mardi">Mardi 10 juin</option>
+                <option value="mercredi">Mercredi 11 juin</option>
               </select>
 
               <input
@@ -444,7 +464,7 @@ export default function AdminPage() {
           </div>
         )}
 
-        {/* Tableau des inscriptions */}
+        {/* Tableau des inscriptions (avec colonne Jour) */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
             <h3 className="font-bold text-[#354878] flex items-center gap-2">
@@ -468,6 +488,7 @@ export default function AdminPage() {
                 <thead className="bg-gray-50 border-b border-gray-100">
                   <tr>
                     <th className="px-4 py-3 text-left text-gray-600 font-semibold">Atelier</th>
+                    <th className="px-4 py-3 text-left text-gray-600 font-semibold">Jour</th>  {/* ✅ Nouvelle colonne */}
                     <th className="px-4 py-3 text-left text-gray-600 font-semibold">Nom</th>
                     <th className="px-4 py-3 text-left text-gray-600 font-semibold">Prénom</th>
                     <th className="px-4 py-3 text-left text-gray-600 font-semibold">Email</th>
@@ -482,7 +503,11 @@ export default function AdminPage() {
                         <span className="bg-[#354878] text-white px-2 py-1 rounded text-xs font-bold">
                           {inscription.atelier_id}
                         </span>
-                       </td>
+                      </td>
+                      {/* ✅ Affichage du jour */}
+                      <td className="px-4 py-3 text-gray-600 text-sm capitalize">
+                        {inscription.jour ?? '—'}
+                      </td>
                       <td className="px-4 py-3 font-medium text-gray-800">{inscription.nom}</td>
                       <td className="px-4 py-3 text-gray-700">{inscription.prenom}</td>
                       <td className="px-4 py-3 text-gray-600">{inscription.email}</td>
