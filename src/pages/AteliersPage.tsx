@@ -39,146 +39,147 @@ interface Message {
 }
 
 // ─── Données ──────────────────────────────────────────────────────────────────
-
+// Tous les ateliers du lundi 8 juin deviennent mardi 9 juin
+// Tous les ateliers du mardi 9 juin deviennent mercredi 10 juin
 const ateliers: Atelier[] = [
-  // ── LUNDI 9 juin – 9h à 10h30 ──────────────────────────────────────────────
+  // ── MARDI 9 juin – 9h à 10h30 (ex-lundi 8 juin) ─────────────────────────
   {
-    id: '1A', code: 'Atelier 1A', jour: 'lundi', date: '9 juin', horaire: '9h - 10h30',
+    id: '1A', code: 'Atelier 1A', jour: 'mardi', date: '9 juin', horaire: '9h - 10h30',
     titre: "(In)corporer notre recherche - Médiation de la recherche en SIC",
     animateur: "Sonia Nikitin, Doctorante en sciences de l'information et de la communication, ELICO, Université Lumière Lyon 2",
     description: "L'atelier « (in)corporer notre recherche » consiste à expérimenter une relation corporelle, somatique, à sa propre recherche. L'atelier se compose des temps suivants : échauffement corporel, exploration en mouvement, documentation par l'écrit ou le dessin et partage collectif.",
     jauge: 10, tag: 'ASC',
   },
   {
-    id: '2A', code: 'Atelier 2A', jour: 'lundi', date: '9 juin', horaire: '9h - 10h30',
+    id: '2A', code: 'Atelier 2A', jour: 'mardi', date: '9 juin', horaire: '9h - 10h30',
     titre: 'Techno-performance "Usages artistiques In-Disciplinaires de l\'IA"',
     animateur: 'Diana Rosette Luciano, Doctorante, LLSETI, USMB',
     description: "Cet atelier se propose de présenter et mettre en discussion une technoperformance, projet artistique et méthodologique inscrit dans la recherche-création doctorale. Cette recherche analyse les interactions entre des artistes performers et un système d'IA générative.",
     jauge: 20, tag: 'ASC',
   },
   {
-    id: '3A', code: 'Atelier 3A', jour: 'lundi', date: '9 juin', horaire: '9h - 10h30',
+    id: '3A', code: 'Atelier 3A', jour: 'mardi', date: '9 juin', horaire: '9h - 10h30',
     titre: 'Créer une communauté de doctorant·e·s en ligne : la plateforme M@iautic',
     animateur: 'Alexandra Salou (IMSIC) et Claire Noy (Lerass)',
     description: "Découvrez M@ieutic, une plateforme pensée avec et pour les doctorant·es, pour échanger, collaborer et faire circuler les données autrement.",
     jauge: 40,
   },
   {
-    id: '4A', code: 'Atelier 4A', jour: 'lundi', date: '9 juin', horaire: '9h - 10h30',
+    id: '4A', code: 'Atelier 4A', jour: 'mardi', date: '9 juin', horaire: '9h - 10h30',
     titre: 'Rédiger des articles scientifiques pour les primo-rédact·eur·rice·s',
     animateur: 'Fanny Bougenies & Julies Bruscq (Commission Formation SFSIC)',
     description: "Cet atelier a pour objectif de vous familiariser avec les processus de publication d'articles scientifiques, requis pour votre dossier de qualification.",
     jauge: 15,
   },
   {
-    id: '5A', code: 'Atelier 5A', jour: 'lundi', date: '9 juin', horaire: '9h - 10h30',
+    id: '5A', code: 'Atelier 5A', jour: 'mardi', date: '9 juin', horaire: '9h - 10h30',
     titre: "Répondre à des offres d'emploi quand on est jeune docteur·e (hors poste d'enseignant·e-chercheur·euse)",
     animateur: 'Fanny Bougenies, Julie Brusq, Julien Péquignot, Laurie Schmitt, Virginie Sonet + Valérie Croissant',
     description: "Cet atelier est consacré à la valorisation des acquis professionnels au cours de la thèse.",
     jauge: 15,
   },
   {
-    id: '6A', code: 'Atelier 6A', jour: 'lundi', date: '9 juin', horaire: '9h - 10h30',
+    id: '6A', code: 'Atelier 6A', jour: 'mardi', date: '9 juin', horaire: '9h - 10h30',
     titre: 'Constituer son dossier de qualification aux fonctions de maître·sse de conférence',
     animateur: 'Julien Péquignot + Aurélie + Johanne + Fanny G.',
     description: "Cet atelier pratique en lien avec le CNU a pour but d'optimiser la constitution de son dossier de qualification et sa rédaction.",
     jauge: 15,
   },
   {
-    id: '7A', code: 'Atelier 7A', jour: 'lundi', date: '9 juin', horaire: '9h - 10h30',
+    id: '7A', code: 'Atelier 7A', jour: 'mardi', date: '9 juin', horaire: '9h - 10h30',
     titre: 'Participer à la campagne MCF synchronisée : comprendre une fiche de poste, adapter son dossier et préparer son audition',
     animateur: 'Virginie Sonet & Laurie Schmitt',
     description: "Cet atelier propose un temps de travail concret consacré à la campagne synchronisée de recrutement des maîtres de conférences.",
     jauge: 15,
   },
-  // ── LUNDI 9 juin – 15h45 à 17h15 ───────────────────────────────────────────
+  // ── MARDI 9 juin – 15h45 à 17h15 (ex-lundi 8 juin) ─────────────────────────
   {
-    id: 'TABLE_RONDE', code: 'Table ronde', jour: 'lundi', date: '9 juin', horaire: '15h45 - 17h15',
+    id: 'TABLE_RONDE', code: 'Table ronde', jour: 'mardi', date: '9 juin', horaire: '15h45 - 17h15',
     titre: "Violences et harcèlement sexistes et sexuels dans l'ESR : enjeux, pratiques et responsabilités",
     animateur: "Une chercheuse en SHS spécialisée dans les VHSS, une représentante d'association, Giuseppina Sapio, Sara Lespagnandelle",
     description: "La table ronde s'adressera tant aux jeunes chercheur·euses qu'aux titulaires. Elle se déroulera en plusieurs temps, qui permettront de croiser les expertises sur les différents aspects et enjeux des violences sexistes et sexuelles dans le monde universitaire.",
     jauge: 40,
   },
   {
-    id: '1B', code: 'Atelier 1B', jour: 'lundi', date: '9 juin', horaire: '15h45 - 17h15',
+    id: '1B', code: 'Atelier 1B', jour: 'mardi', date: '9 juin', horaire: '15h45 - 17h15',
     titre: "Auto-organisation en recherche doctorale : comment concilier ambition collective et réalités individuelles ?",
     animateur: 'Nodra MOUTAROU, Aliénor PETIOT, Marie TREMBLAY (LabSIC, USPN)',
     description: "L'organisation d'événements scientifiques par et pour les jeunes chercheurs·euses non-titulaires apparaît comme une manière de dépasser l'isolement doctoral.",
     jauge: 15,
   },
   {
-    id: '2B', code: 'Atelier 2B', jour: 'lundi', date: '9 juin', horaire: '15h45 - 17h15',
+    id: '2B', code: 'Atelier 2B', jour: 'mardi', date: '9 juin', horaire: '15h45 - 17h15',
     titre: 'Constituer son dossier de qualification aux fonctions de maître·sse de conférence',
     animateur: 'Julien Péquignot + Aurélie + Johanne + Fanny G.',
     description: "Cet atelier pratique en lien avec le CNU a pour but d'optimiser la constitution de son dossier de qualification et sa rédaction.",
     jauge: 15,
   },
   {
-    id: '3B', code: 'Atelier 3B', jour: 'lundi', date: '9 juin', horaire: '15h45 - 17h15',
+    id: '3B', code: 'Atelier 3B', jour: 'mardi', date: '9 juin', horaire: '15h45 - 17h15',
     titre: 'Participer à la campagne MCF synchronisée',
     animateur: 'Virginie Sonet & Laurie Schmitt',
     description: "Cet atelier propose un temps de travail concret consacré à la campagne synchronisée de recrutement des maîtres de conférences.",
     jauge: 15,
   },
   {
-    id: '4B', code: 'Atelier 4B', jour: 'lundi', date: '9 juin', horaire: '15h45 - 17h15',
+    id: '4B', code: 'Atelier 4B', jour: 'mardi', date: '9 juin', horaire: '15h45 - 17h15',
     titre: 'La méthode ethnographique en SIC',
     animateur: 'Johanne Samè et Allan Deneuville',
     description: "Comment pratiquer la méthode ethnographique en sciences de l'information et de la communication ? Cet atelier propose d'explorer les dimensions concrètes et réflexives de l'enquête ethnographique.",
     jauge: 20,
   },
   {
-    id: '5B', code: 'Atelier 5B', jour: 'lundi', date: '9 juin', horaire: '15h45 - 17h15',
+    id: '5B', code: 'Atelier 5B', jour: 'mardi', date: '9 juin', horaire: '15h45 - 17h15',
     titre: "Répondre à des offres d'emploi quand on est jeune docteur·e (hors poste d'enseignant·e-chercheur·euse)",
     animateur: 'Fanny Bougenies, Julie Brusq, Julien Péquignot, Laurie Schmitt, Virginie Sonet + Valérie Croissant',
     description: "Valorisation des acquis professionnels au cours de la thèse et accompagnement dans les candidatures hors fonction d'enseignant·e-chercheur·euse.",
     jauge: 15,
   },
-  // ── MARDI 10 juin – 11h à 12h30 ─────────────────────────────────────────────
+  // ── MERCREDI 10 juin – 11h à 12h30 (ex-mardi 9 juin) ───────────────────────
   {
-    id: '1C', code: 'Atelier 1C', jour: 'mardi', date: '10 juin', horaire: '11h - 12h30',
+    id: '1C', code: 'Atelier 1C', jour: 'mercredi', date: '10 juin', horaire: '11h - 12h30',
     titre: 'Atelier BD de la thèse',
     animateur: 'Valériane Loison & Pascal Génot',
     description: "L'objectif de cet atelier est d'amener chaque doctorant·e à concevoir une planche de bande dessinée mettant en lumière un aspect central de sa thèse.",
     jauge: 10, tag: 'ASC',
   },
   {
-    id: '2C', code: 'Atelier 2C', jour: 'mardi', date: '10 juin', horaire: '11h - 12h30',
+    id: '2C', code: 'Atelier 2C', jour: 'mercredi', date: '10 juin', horaire: '11h - 12h30',
     titre: 'Jeu de rôle narratif "Kama"',
     animateur: 'Geoffrey Lavigne, doctorant (CESCO et Cerlis)',
     description: "L'atelier KAMA-MUTA est un jeu de rôle narratif conçu dans le cadre d'un projet de recherche-création portant sur les futurs de la nature en milieu urbain.",
     jauge: 20, tag: 'ASC',
   },
   {
-    id: '3C', code: 'Atelier 3C', jour: 'mardi', date: '10 juin', horaire: '11h - 12h30',
+    id: '3C', code: 'Atelier 3C', jour: 'mercredi', date: '10 juin', horaire: '11h - 12h30',
     titre: 'Publication en anglais dans des revues internationales de premier plan',
     animateur: 'Commission RI, Zhao Alexandre Huang',
     description: "Cet atelier méthodologique propose une introduction structurée aux stratégies de publication dans les revues anglophones à fort impact.",
     jauge: 20,
   },
   {
-    id: '4C', code: 'Atelier 4C', jour: 'mardi', date: '10 juin', horaire: '11h - 12h30',
+    id: '4C', code: 'Atelier 4C', jour: 'mercredi', date: '10 juin', horaire: '11h - 12h30',
     titre: 'Méthode ethnographique en SIC',
     animateur: 'Johanne Samè et Allan Deneuville',
     description: "Explorer les dimensions concrètes et réflexives de l'enquête ethnographique : écrire et décrire son terrain, mobiliser différents supports.",
     jauge: 20,
   },
   {
-    id: '5C', code: 'Atelier 5C', jour: 'mardi', date: '10 juin', horaire: '11h - 12h30',
+    id: '5C', code: 'Atelier 5C', jour: 'mercredi', date: '10 juin', horaire: '11h - 12h30',
     titre: 'Rédiger des articles scientifiques pour les primo-rédact·eur·rice·s',
     animateur: 'Fanny Bougenies & Julies Bruscq (Commission Formation SFSIC)',
     description: "Familiarisation avec les processus de publication d'articles scientifiques, requis pour votre dossier de qualification.",
     jauge: 15,
   },
   {
-    id: '6C', code: 'Atelier 6C', jour: 'mardi', date: '10 juin', horaire: '11h - 12h30',
+    id: '6C', code: 'Atelier 6C', jour: 'mercredi', date: '10 juin', horaire: '11h - 12h30',
     titre: "Répondre à des offres d'emploi quand on est jeune docteur·e",
     animateur: 'Fanny Bougenies, Julie Brusq, Julien Péquignot, Laurie Schmitt, Virginie Sonet + Valérie Croissant',
     description: "Valorisation des compétences liées au doctorat pour des postes hors enseignement-recherche.",
     jauge: 15,
   },
   {
-    id: '7C', code: 'Atelier 7C', jour: 'mardi', date: '10 juin', horaire: '11h - 12h30',
+    id: '7C', code: 'Atelier 7C', jour: 'mercredi', date: '10 juin', horaire: '11h - 12h30',
     titre: 'Constituer son dossier de qualification aux fonctions de maître·sse de conférence',
     animateur: 'Julien Péquignot + Johanne + Aurélie + Fanny G.',
     description: "Optimiser la constitution de son dossier de qualification et sa rédaction en lien avec le CNU.",
@@ -227,9 +228,9 @@ const JOURS = ['lundi', 'mardi', 'mercredi'] as const;
 type Jour = typeof JOURS[number];
 
 const JOUR_LABELS: Record<Jour, string> = {
-  lundi:    'Lundi 9 juin',
-  mardi:    'Mardi 10 juin',
-  mercredi: 'Mercredi 11 juin',
+  lundi:    'Lundi 8 juin',    // non utilisé mais gardé pour cohérence
+  mardi:    'Mardi 9 juin',
+  mercredi: 'Mercredi 10 juin',
 };
 
 const JOUR_COLORS: Record<Jour, { bg: string; border: string; text: string; badge: string }> = {
@@ -480,7 +481,7 @@ export default function AteliersPage({ onNavigate }: AteliersPageProps) {
   const [message, setMessage] = useState<Message | null>(null);
   const [alertMessage, setAlertMessage] = useState('');
   const [detailsAtelier, setDetailsAtelier] = useState<Atelier | null>(null);
-  const [activeJour, setActiveJour] = useState<Jour>('lundi');
+  const [activeJour, setActiveJour] = useState<Jour>('mardi'); // plus d'ateliers le lundi
 
   const fetchStats = useCallback(async () => {
     try {

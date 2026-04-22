@@ -32,7 +32,6 @@ interface AlertMsg {
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 
-// Change ce mot de passe !
 const ADMIN_PASSWORD = 'admin2026';
 
 const API_BASE = `https://${projectId}.supabase.co/functions/v1/make-server-7e04106c/ateliers`;
@@ -44,6 +43,12 @@ const ATELIERS_IDS = [
   '1B','2B','3B','4B','5B',
   '1C','2C','3C','4C','5C','6C','7C',
 ];
+
+// Mapping des jours pour affichage
+const JOUR_LABELS: Record<string, string> = {
+  mardi: 'Mardi 9 juin',
+  mercredi: 'Mercredi 10 juin',
+};
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -81,7 +86,7 @@ function exportCSV(inscriptions: Inscription[]) {
   const headers = ['Atelier', 'Jour', 'Nom', 'Prénom', 'Email', 'Date inscription'];
   const rows = inscriptions.map((i) => [
     i.atelier_id,
-    i.jour ?? '',
+    i.jour ? JOUR_LABELS[i.jour] ?? i.jour : '',
     i.nom,
     i.prenom,
     i.email,
@@ -169,7 +174,6 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
 const INITIAL_FORM: FormData = { atelier_id: '', jour: '', nom: '', prenom: '', email: '' };
 
 export default function AdminPage() {
-  // ✅ Initialisation avec sessionStorage
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     return sessionStorage.getItem('admin_auth') === 'true';
   });
@@ -258,7 +262,7 @@ export default function AdminPage() {
     return matchSearch && matchAtelier;
   });
 
-  // ── Login screen avec sessionStorage ─────────────────────────────────────────
+  // ── Login screen ────────────────────────────────────────────────────────────
 
   if (!isAuthenticated) {
     return <LoginScreen onLogin={() => {
@@ -278,7 +282,6 @@ export default function AdminPage() {
           <h1 className="text-white text-2xl font-bold">Administration</h1>
           <p className="text-white/70 text-sm">Gestion des inscriptions aux ateliers</p>
         </div>
-        {/* ✅ Bouton Déconnexion avec suppression sessionStorage */}
         <button
           onClick={() => {
             sessionStorage.removeItem('admin_auth');
@@ -393,7 +396,7 @@ export default function AdminPage() {
           </div>
         </div>
 
-        {/* Formulaire d'ajout avec jour */}
+        {/* Formulaire d'ajout avec jour – mis à jour (mardi 9 juin, mercredi 10 juin) */}
         {showAddForm && (
           <div className="bg-white rounded-xl p-6 shadow-sm border-2 border-[#B9177B]/20">
             <h3 className="text-[#354878] font-bold text-lg mb-4 flex items-center gap-2">
@@ -413,15 +416,15 @@ export default function AdminPage() {
                 ))}
               </select>
 
+              {/* Sélecteur jour corrigé : uniquement mardi 9 juin et mercredi 10 juin */}
               <select
                 value={formData.jour ?? ''}
                 onChange={(e) => setFormData({ ...formData, jour: e.target.value })}
                 className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#6A9ECC] text-sm text-gray-700"
               >
                 <option value="">Choisir un jour</option>
-                <option value="lundi">Lundi 9 juin</option>
-                <option value="mardi">Mardi 10 juin</option>
-                <option value="mercredi">Mercredi 11 juin</option>
+                <option value="mardi">Mardi 9 juin</option>
+                <option value="mercredi">Mercredi 10 juin</option>
               </select>
 
               <input
@@ -472,7 +475,7 @@ export default function AdminPage() {
           </div>
         )}
 
-        {/* Tableau des inscriptions avec colonne Jour */}
+        {/* Tableau des inscriptions avec colonne Jour formatée */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
             <h3 className="font-bold text-[#354878] flex items-center gap-2">
@@ -511,10 +514,10 @@ export default function AdminPage() {
                         <span className="bg-[#354878] text-white px-2 py-1 rounded text-xs font-bold">
                           {inscription.atelier_id}
                         </span>
-                      </td>
-                      <td className="px-4 py-3 text-gray-600 text-sm capitalize">
-                        {inscription.jour ?? '—'}
-                      </td>
+                       </td>
+                      <td className="px-4 py-3 text-gray-600 text-sm">
+                        {inscription.jour ? JOUR_LABELS[inscription.jour] ?? inscription.jour : '—'}
+                       </td>
                       <td className="px-4 py-3 font-medium text-gray-800">{inscription.nom}</td>
                       <td className="px-4 py-3 text-gray-700">{inscription.prenom}</td>
                       <td className="px-4 py-3 text-gray-600">{inscription.email}</td>

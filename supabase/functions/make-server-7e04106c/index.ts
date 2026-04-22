@@ -136,28 +136,31 @@ function emailRappel(nom: string, prenom: string, atelierId: string, jour: strin
 }
 
 // ─── Données ateliers (pour les emails) ───────────────────────────────────────
-
+// Les ateliers initialement prévus le lundi 8 juin passent au mardi 9 juin
+// Les ateliers initialement prévus le mardi 10 juin passent au mercredi 10 juin
 const ATELIERS_INFO: Record<string, { horaire: string; jour: string }> = {
-  '1A': { jour: 'Lundi 9 juin', horaire: '9h - 10h30' },
-  '2A': { jour: 'Lundi 9 juin', horaire: '9h - 10h30' },
-  '3A': { jour: 'Lundi 9 juin', horaire: '9h - 10h30' },
-  '4A': { jour: 'Lundi 9 juin', horaire: '9h - 10h30' },
-  '5A': { jour: 'Lundi 9 juin', horaire: '9h - 10h30' },
-  '6A': { jour: 'Lundi 9 juin', horaire: '9h - 10h30' },
-  '7A': { jour: 'Lundi 9 juin', horaire: '9h - 10h30' },
-  'TABLE_RONDE': { jour: 'Lundi 9 juin', horaire: '15h45 - 17h15' },
-  '1B': { jour: 'Lundi 9 juin', horaire: '15h45 - 17h15' },
-  '2B': { jour: 'Lundi 9 juin', horaire: '15h45 - 17h15' },
-  '3B': { jour: 'Lundi 9 juin', horaire: '15h45 - 17h15' },
-  '4B': { jour: 'Lundi 9 juin', horaire: '15h45 - 17h15' },
-  '5B': { jour: 'Lundi 9 juin', horaire: '15h45 - 17h15' },
-  '1C': { jour: 'Mardi 10 juin', horaire: '11h - 12h30' },
-  '2C': { jour: 'Mardi 10 juin', horaire: '11h - 12h30' },
-  '3C': { jour: 'Mardi 10 juin', horaire: '11h - 12h30' },
-  '4C': { jour: 'Mardi 10 juin', horaire: '11h - 12h30' },
-  '5C': { jour: 'Mardi 10 juin', horaire: '11h - 12h30' },
-  '6C': { jour: 'Mardi 10 juin', horaire: '11h - 12h30' },
-  '7C': { jour: 'Mardi 10 juin', horaire: '11h - 12h30' },
+  // Anciens ateliers du lundi 8 juin → deviennent mardi 9 juin
+  '1A': { jour: 'Mardi 9 juin', horaire: '9h - 10h30' },
+  '2A': { jour: 'Mardi 9 juin', horaire: '9h - 10h30' },
+  '3A': { jour: 'Mardi 9 juin', horaire: '9h - 10h30' },
+  '4A': { jour: 'Mardi 9 juin', horaire: '9h - 10h30' },
+  '5A': { jour: 'Mardi 9 juin', horaire: '9h - 10h30' },
+  '6A': { jour: 'Mardi 9 juin', horaire: '9h - 10h30' },
+  '7A': { jour: 'Mardi 9 juin', horaire: '9h - 10h30' },
+  'TABLE_RONDE': { jour: 'Mardi 9 juin', horaire: '15h45 - 17h15' },
+  '1B': { jour: 'Mardi 9 juin', horaire: '15h45 - 17h15' },
+  '2B': { jour: 'Mardi 9 juin', horaire: '15h45 - 17h15' },
+  '3B': { jour: 'Mardi 9 juin', horaire: '15h45 - 17h15' },
+  '4B': { jour: 'Mardi 9 juin', horaire: '15h45 - 17h15' },
+  '5B': { jour: 'Mardi 9 juin', horaire: '15h45 - 17h15' },
+  // Anciens ateliers du mardi 10 juin → deviennent mercredi 10 juin
+  '1C': { jour: 'Mercredi 10 juin', horaire: '11h - 12h30' },
+  '2C': { jour: 'Mercredi 10 juin', horaire: '11h - 12h30' },
+  '3C': { jour: 'Mercredi 10 juin', horaire: '11h - 12h30' },
+  '4C': { jour: 'Mercredi 10 juin', horaire: '11h - 12h30' },
+  '5C': { jour: 'Mercredi 10 juin', horaire: '11h - 12h30' },
+  '6C': { jour: 'Mercredi 10 juin', horaire: '11h - 12h30' },
+  '7C': { jour: 'Mercredi 10 juin', horaire: '11h - 12h30' },
 }
 
 // ─── Serveur ───────────────────────────────────────────────────────────────────
@@ -306,9 +309,17 @@ Deno.serve(async (req) => {
       return Response.json({ error: error.message }, { status: 400, headers: corsHeaders })
     }
 
-    // Envoyer email de désinscription
+    // Envoyer email de désinscription avec les dates mises à jour
     if (inscription) {
-      const jourLabel = jour === 'lundi' ? 'Lundi 9 juin' : jour === 'mardi' ? 'Mardi 10 juin' : 'Mercredi 11 juin'
+      // Mapping des jours pour les emails : lundi n'est plus utilisé, mardi devient mercredi 10 juin ? Non, on suit la logique :
+      // Les inscriptions existantes en base peuvent avoir 'lundi', 'mardi', 'mercredi' comme valeurs du champ jour.
+      // Après modification, les ateliers sont désormais les mardi 9 juin (ex-lundi) et mercredi 10 juin (ex-mardi).
+      // On adapte l'affichage dans l'email.
+      let jourLabel = ''
+      if (jour === 'lundi') jourLabel = 'Mardi 9 juin'
+      else if (jour === 'mardi') jourLabel = 'Mercredi 10 juin'
+      else if (jour === 'mercredi') jourLabel = 'Mercredi 10 juin'
+      else jourLabel = jour
       await sendEmail(
         email,
         `Désinscription confirmée — Atelier ${inscription.atelier_id}`,
